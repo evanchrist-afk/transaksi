@@ -1,0 +1,30 @@
+package ui.ft.ccit.faculty.transaksi.controller;
+
+import ui.ft.ccit.faculty.transaksi.dto.LoginRequest;
+import ui.ft.ccit.faculty.transaksi.dto.LoginResponse;
+import ui.ft.ccit.faculty.transaksi.security.JwtUtil;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+
+    private final JwtUtil jwtUtil;
+
+    public AuthController(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request) {
+
+        // LOGIN DEMO (AMAN BUAT TUGAS)
+        if (!request.getUsername().equals("admin") ||
+            !request.getPassword().equals("admin123")) {
+            throw new RuntimeException("Username / Password salah");
+        }
+
+        String token = jwtUtil.generateToken(request.getUsername());
+        return new LoginResponse(token);
+    }
+}
